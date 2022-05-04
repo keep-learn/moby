@@ -19,6 +19,7 @@ func NewCORSMiddleware(d string) CORSMiddleware {
 }
 
 // WrapHandler returns a new handler function wrapping the previous one in the request chain.
+// 跨域相关的设置
 func (c CORSMiddleware) WrapHandler(handler func(ctx context.Context, w http.ResponseWriter, r *http.Request, vars map[string]string) error) func(ctx context.Context, w http.ResponseWriter, r *http.Request, vars map[string]string) error {
 	return func(ctx context.Context, w http.ResponseWriter, r *http.Request, vars map[string]string) error {
 		// If "api-cors-header" is not given, but "api-enable-cors" is true, we set cors to "*"

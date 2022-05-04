@@ -27,6 +27,7 @@ func (r *checkpointRouter) Routes() []router.Route {
 	return r.routes
 }
 
+// 容器 检查站
 func (r *checkpointRouter) initRoutes() {
 	r.routes = []router.Route{
 		router.NewGetRoute("/containers/{name:.*}/checkpoints", r.getContainerCheckpoints, router.Experimental),

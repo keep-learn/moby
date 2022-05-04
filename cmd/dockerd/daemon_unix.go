@@ -74,6 +74,7 @@ func (cli *DaemonCli) setupConfigReloadTrap() {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, unix.SIGHUP)
 	go func() {
+		// channel的range操作；接受一次信号会reloadConfig一次，不会退出，因为 c 没有close
 		for range c {
 			cli.reloadConfig()
 		}

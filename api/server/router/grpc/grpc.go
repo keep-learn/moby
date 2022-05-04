@@ -34,6 +34,7 @@ func (gr *grpcRouter) Routes() []router.Route {
 	return gr.routes
 }
 
+// grpc 相关的
 func (gr *grpcRouter) initRoutes() {
 	gr.routes = []router.Route{
 		router.NewPostRoute("/grpc", gr.serveGRPC),

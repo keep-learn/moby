@@ -20,6 +20,7 @@ func NewRouter(b Backend, decoder httputils.ContainerDecoder, cgroup2 bool) rout
 		decoder: decoder,
 		cgroup2: cgroup2,
 	}
+	// 注册路由 client请求的路由在这里
 	r.initRoutes()
 	return r
 }
@@ -29,6 +30,7 @@ func (r *containerRouter) Routes() []router.Route {
 	return r.routes
 }
 
+// 容器相关的路由
 // initRoutes initializes the routes in container router
 func (r *containerRouter) initRoutes() {
 	r.routes = []router.Route{

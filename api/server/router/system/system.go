@@ -15,6 +15,7 @@ type systemRouter struct {
 	features *map[string]bool
 }
 
+// 系统相关的路由
 // NewRouter initializes a new system router
 func NewRouter(b Backend, c ClusterBackend, builder *buildkit.Builder, features *map[string]bool) router.Router {
 	r := &systemRouter{

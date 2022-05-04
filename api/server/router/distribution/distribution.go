@@ -23,6 +23,7 @@ func (r *distributionRouter) Routes() []router.Route {
 }
 
 // initRoutes initializes the routes in the distribution router
+// 分布式的路由
 func (r *distributionRouter) initRoutes() {
 	r.routes = []router.Route{
 		// GET

@@ -26,6 +26,7 @@ func (r *networkRouter) Routes() []router.Route {
 	return r.routes
 }
 
+// 网络相关的
 func (r *networkRouter) initRoutes() {
 	r.routes = []router.Route{
 		// GET

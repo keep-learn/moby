@@ -24,6 +24,8 @@ func (sr *swarmRouter) initCluster(ctx context.Context, w http.ResponseWriter, r
 	}
 	version := httputils.VersionFromContext(ctx)
 
+	// 这么多版本兼容的地方
+	// 感觉有点问题：没有定义常量
 	// DefaultAddrPool and SubnetSize were added in API 1.39. Ignore on older API versions.
 	if versions.LessThan(version, "1.39") {
 		req.DefaultAddrPool = nil

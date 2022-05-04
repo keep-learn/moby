@@ -22,6 +22,7 @@ func (sr *swarmRouter) Routes() []router.Route {
 	return sr.routes
 }
 
+// docker swarm 相关的路由信息
 func (sr *swarmRouter) initRoutes() {
 	sr.routes = []router.Route{
 		router.NewPostRoute("/swarm/init", sr.initCluster),

@@ -20,6 +20,7 @@ func NewExperimentalMiddleware(experimentalEnabled bool) ExperimentalMiddleware 
 }
 
 // WrapHandler returns a new handler function wrapping the previous one in the request chain.
+// http header中新增：Docker-Experimental
 func (e ExperimentalMiddleware) WrapHandler(handler func(ctx context.Context, w http.ResponseWriter, r *http.Request, vars map[string]string) error) func(ctx context.Context, w http.ResponseWriter, r *http.Request, vars map[string]string) error {
 	return func(ctx context.Context, w http.ResponseWriter, r *http.Request, vars map[string]string) error {
 		w.Header().Set("Docker-Experimental", e.experimental)

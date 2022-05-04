@@ -22,6 +22,7 @@ func (r *imageRouter) Routes() []router.Route {
 	return r.routes
 }
 
+// 镜像相关的
 // initRoutes initializes the routes in the image router
 func (r *imageRouter) initRoutes() {
 	r.routes = []router.Route{

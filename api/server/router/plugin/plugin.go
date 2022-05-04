@@ -22,6 +22,7 @@ func (r *pluginRouter) Routes() []router.Route {
 	return r.routes
 }
 
+// 插件相关的路由
 func (r *pluginRouter) initRoutes() {
 	r.routes = []router.Route{
 		router.NewGetRoute("/plugins", r.listPlugins),

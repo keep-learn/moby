@@ -75,12 +75,15 @@ func NewDaemonCli() *DaemonCli {
 	return &DaemonCli{}
 }
 
+// dockerd 开始执行的方法
 func (cli *DaemonCli) start(opts *daemonOptions) (err error) {
 	opts.setDefaultOptions()
 
+	// 加载配置
 	if cli.Config, err = loadDaemonCliConfig(opts); err != nil {
 		return err
 	}
+	// 参数的校验
 	if err := checkDeprecatedOptions(cli.Config); err != nil {
 		return err
 	}
@@ -166,12 +169,15 @@ func (cli *DaemonCli) start(opts *daemonOptions) (err error) {
 
 	cli.api = apiserver.New(serverConfig)
 
+	// 监听服务
 	hosts, err := loadListeners(cli, serverConfig)
 	if err != nil {
 		return errors.Wrap(err, "failed to load listeners")
 	}
 
+	// 这里启动了一个 WithCancel 的context
 	ctx, cancel := context.WithCancel(context.Background())
+	// initContainerD
 	waitForContainerDShutdown, err := cli.initContainerD(ctx)
 	if waitForContainerDShutdown != nil {
 		defer waitForContainerDShutdown(10 * time.Second)
@@ -186,6 +192,7 @@ func (cli *DaemonCli) start(opts *daemonOptions) (err error) {
 	defer close(stopc)
 
 	trap.Trap(func() {
+		// 执行善后工作
 		cli.stop()
 		<-stopc // wait for daemonCli.start() to return
 	}, logrus.StandardLogger())
@@ -236,10 +243,12 @@ func (cli *DaemonCli) start(opts *daemonOptions) (err error) {
 	routerOptions.api = cli.api
 	routerOptions.cluster = c
 
+	// 初始化路由信息
 	initRouter(routerOptions)
 
 	go d.ProcessClusterNotifications(ctx, c.GetWatchStream())
 
+	// 接受信号，重新加载配置（看情况，严格情况下需要添加锁）
 	cli.setupConfigReloadTrap()
 
 	// The serve API routine never exits unless an error occurs
@@ -249,6 +258,7 @@ func (cli *DaemonCli) start(opts *daemonOptions) (err error) {
 	go cli.api.Wait(serveAPIWait)
 
 	// after the daemon is done setting up we can notify systemd api
+	// 初始化完成，发送success的信号
 	notifyReady()
 
 	// Daemon is fully initialized and handling API traffic
@@ -528,7 +538,9 @@ func initRouter(opts routerOptions) {
 	routers := []router.Router{
 		// we need to add the checkpoint router before the container router or the DELETE gets masked
 		checkpointrouter.NewRouter(opts.daemon, decoder),
+		// 注册路由信息
 		container.NewRouter(opts.daemon, decoder, opts.daemon.RawSysInfo().CgroupUnified),
+
 		image.NewRouter(opts.daemon.ImageService()),
 		systemrouter.NewRouter(opts.daemon, opts.cluster, opts.buildkit, opts.features),
 		volume.NewRouter(opts.daemon.VolumesService()),

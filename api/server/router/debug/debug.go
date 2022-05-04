@@ -22,6 +22,7 @@ type debugRouter struct {
 	routes []router.Route
 }
 
+// 调试的路由
 func (r *debugRouter) initRoutes() {
 	r.routes = []router.Route{
 		router.NewGetRoute("/vars", frameworkAdaptHandler(expvar.Handler())),

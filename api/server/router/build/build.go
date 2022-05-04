@@ -29,6 +29,7 @@ func (r *buildRouter) Routes() []router.Route {
 	return r.routes
 }
 
+// 编译相关
 func (r *buildRouter) initRoutes() {
 	r.routes = []router.Route{
 		router.NewPostRoute("/build", r.postBuild),

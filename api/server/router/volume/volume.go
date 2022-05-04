@@ -22,6 +22,7 @@ func (r *volumeRouter) Routes() []router.Route {
 	return r.routes
 }
 
+// 磁盘卷相关的路由
 func (r *volumeRouter) initRoutes() {
 	r.routes = []router.Route{
 		// GET
